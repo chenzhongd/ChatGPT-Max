@@ -38,18 +38,19 @@ func NewSmsHandler(
 func (h *SmsHandler) SendCode(c *gin.Context) {
 	var data struct {
 		Receiver string `json:"receiver"` // 接收者
-		Key      string `json:"key"`
-		Dots     string `json:"dots"`
+		// Key      string `json:"key"`      // 不再需要这个字段
+		// Dots     string `json:"dots"`     // 不再需要这个字段
 	}
 	if err := c.ShouldBindJSON(&data); err != nil {
 		resp.ERROR(c, types.InvalidArgs)
 		return
 	}
 
-	if !h.captcha.Check(data) {
-		resp.ERROR(c, "验证码错误，请先完人机验证")
-		return
-	}
+	// 移除图形验证码验证逻辑
+	// if !h.captcha.Check(data) {
+	//     resp.ERROR(c, "验证码错误，请先完人机验证")
+	//     return
+	// }
 
 	code := utils.RandomNumber(6)
 	var err error
@@ -65,7 +66,6 @@ func (h *SmsHandler) SendCode(c *gin.Context) {
 			return
 		}
 		err = h.sms.GetService().SendVerifyCode(data.Receiver, code)
-
 	}
 	if err != nil {
 		resp.ERROR(c, err.Error())
@@ -81,3 +81,4 @@ func (h *SmsHandler) SendCode(c *gin.Context) {
 
 	resp.SUCCESS(c)
 }
+
