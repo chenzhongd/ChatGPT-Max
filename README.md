@@ -1,4 +1,5 @@
 # ChatGPT-Max
+体验地址：https://aitechlab.com.cn/login
 
 原始项目代码地址：https://github.com/yangjian102621/chatgpt-plus
 
